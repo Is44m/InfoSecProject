@@ -15,8 +15,8 @@ def create_app():
     app = Flask(__name__)
     app.secret_key = os.getenv('SECRET_KEY', os.urandom(24))
     
-    # Enable CORS for all origins
-    CORS(app)
+     # Enable CORS for only your frontend domain
+    CORS(app, origins=["https://quantum-shield-five.vercel.app"])
     
     # Security headers with Talisman
     csp = {
