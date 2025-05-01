@@ -35,10 +35,12 @@ export const AdvancedTextScramble: React.FC<TextScrambleProps> = ({
     if (rafRef.current) cancelAnimationFrame(rafRef.current);
     runAnim.current = false;
 
-    // Use full text instead of truncating
+    // Prepare for a new animation
+    const safeText = text;
+    // const safeText = text.length > 100 ? text.substring(0, 100) : text;
     if (!isActive) {
       setChars(
-        text.split("").map((c) => ({
+        safeText.split("").map((c) => ({
           final: c,
           current: c,
           locked: true,
@@ -50,9 +52,8 @@ export const AdvancedTextScramble: React.FC<TextScrambleProps> = ({
     }
 
     // For each char, give a random delay (cascades left->right)
-    // Increasing base and stagger values to slow down animation
-    const base = 65, stagger = 45; // Increased from 50/35 to slow down animation
-    const timeline = text.split("").map((c, i) => ({
+    const base = 50, stagger = 35;
+    const timeline = safeText.split("").map((c, i) => ({
       final: c,
       current:
         Math.random() > 0.6
@@ -121,18 +122,12 @@ export const AdvancedTextScramble: React.FC<TextScrambleProps> = ({
       }
     };
 
-    // Slightly delay between frames for slower animation
-    rafRef.current = setTimeout(() => {
-      requestAnimationFrame(loop);
-    }, 15) as unknown as number; // Add small delay between frames
+    rafRef.current = requestAnimationFrame(loop);
 
     // Cleanup
     return () => {
       runAnim.current = false;
-      if (rafRef.current) {
-        clearTimeout(rafRef.current);
-        cancelAnimationFrame(rafRef.current);
-      }
+      if (rafRef.current) cancelAnimationFrame(rafRef.current);
     };
   }, [text, isActive]);
 

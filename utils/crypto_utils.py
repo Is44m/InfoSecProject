@@ -2,7 +2,7 @@
 Utility functions for post-quantum cryptographic operations
 using the pqc library which implements NIST PQC finalists.
 """
-from pqc.kem import mceliece6960119 as kemalg
+from pqc.kem import kyber512 as kemalg
 
 def generate_kyber_keypair():
     """
