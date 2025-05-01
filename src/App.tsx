@@ -34,7 +34,7 @@ function App() {
     setAnimatingKeys(true);
     
     try {
-      const response = await fetch('http://localhost:5000/crypto/generate-keys', {
+      const response = await fetch('https://is44m.pythonanywhere.com/crypto/generate-keys', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' }
       });
@@ -59,7 +59,7 @@ function App() {
     setAnimatingEncrypt(true);
     
     try {
-      const response = await fetch('http://localhost:5000/crypto/encrypt', {
+      const response = await fetch('https://is44m.pythonanywhere.com/crypto/encrypt', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ public_key: publicKey, message })
@@ -86,7 +86,7 @@ function App() {
     setDecryptedMessage(""); // Clear previous message
     
     try {
-      const response = await fetch('http://localhost:5000/crypto/decrypt', {
+      const response = await fetch('https://is44m.pythonanywhere.com/crypto/decrypt', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ private_key: privateKey, ciphertext: inputDecryptMessage })

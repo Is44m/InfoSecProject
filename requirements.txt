@@ -2,7 +2,6 @@ Flask==2.3.3
 python-dotenv==1.0.0
 Flask-Talisman==1.1.0
 Flask-WTF==1.2.1
-pqcrypto==0.1.3
 python-crystals==0.0.3
 pyoqs==0.4.0
 colorama==0.4.6
@@ -24,3 +23,6 @@ wheel==0.45.1
 blinker==1.9.0
 cffi==1.17.1
 click==8.1.8
+flask_talisman
+flask_cors
+pypqc
