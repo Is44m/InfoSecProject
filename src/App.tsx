@@ -49,7 +49,7 @@ function App() {
     
     setTimeout(() => {
       setLoadingKeys(false);
-      setTimeout(() => setAnimatingKeys(false), 1500); // Longer animation
+      setTimeout(() => setAnimatingKeys(false), 1000); // Longer animation
     }, 800);
   };
 
@@ -117,7 +117,7 @@ function App() {
           </div>
           <h1 className="text-5xl font-bold mb-4 cyber-title">QUANTUM SHIELD</h1>
           <div className="cyber-divider mx-auto w-3/4 max-w-md"></div>
-          <p className="text-xl mt-4 cyber-subtitle">POST-QUANTUM CRYPTOGRAPHY INTERFACE</p>
+          <p className="text-xl mt-4 cyber-subtitle">POST-QUANTUM CRYPTOGRAPHY</p>
         </header>
 
         <div className="cyber-panel">
