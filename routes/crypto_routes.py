@@ -3,7 +3,7 @@ from utils.crypto_utils import generate_kyber_keypair, encrypt_message, decrypt_
 
 crypto_bp = Blueprint('crypto', __name__)
 
-@crypto_bp.route('/generate-keys', methods=['POST'])
+@crypto_bp.route('/generate-keys', methods=['POST', 'OPTIONS'])
 def generate_keys():
     """API endpoint to generate a Kyber keypair"""
     try:
@@ -25,7 +25,7 @@ def generate_keys():
             'message': f'Error generating keys: {str(e)}'
         }), 500
 
-@crypto_bp.route('/encrypt', methods=['POST'])
+@crypto_bp.route('/encrypt', methods=['POST', 'OPTIONS'])
 def encrypt():
     """API endpoint to encrypt a message using a public key"""
     try:
@@ -56,7 +56,7 @@ def encrypt():
             'message': f'Error encrypting message: {str(e)}'
         }), 500
 
-@crypto_bp.route('/decrypt', methods=['POST'])
+@crypto_bp.route('/decrypt', methods=['POST' , 'OPTIONS'])
 def decrypt():
     """API endpoint to decrypt a message using a private key"""
     try:
