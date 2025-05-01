@@ -1,0 +1,109 @@
+{% extends "base.html" %}
+
+{% block extra_head %}
+<meta name="description" content="Explore post-quantum cryptography with our interactive demo. Generate keys, encrypt and decrypt messages using quantum-resistant algorithms.">
+{% endblock %}
+
+{% block content %}
+<section class="hero">
+    <div class="hero-content">
+        <h1>Post-Quantum Cryptography Demo</h1>
+        <p class="subtitle">Experience quantum-resistant encryption in action</p>
+    </div>
+</section>
+
+<section class="pqc-demo">
+    <div class="crypto-container">
+        <h2>Quantum-Resistant Encryption</h2>
+        <p class="description">
+            Post-Quantum Cryptography (PQC) provides algorithms designed to be secure against quantum computer attacks. 
+            This demo uses Kyber, a NIST PQC finalist, to demonstrate key generation, encryption, and decryption.
+        </p>
+
+        <!-- Key Generation Section -->
+        <div class="crypto-card" id="key-generation">
+            <div class="card-header">
+                <h3>1. Key Generation</h3>
+                <div class="status-indicator" id="keygen-status"></div>
+            </div>
+            <div class="card-content">
+                <p>Generate a quantum-resistant public/private key pair using Kyber512.</p>
+                <button class="primary-button" id="generate-keys-btn">Generate Keys</button>
+                <div class="key-display hidden" id="key-results">
+                    <div class="key-section">
+                        <h4>Public Key <span class="key-type">(Share this)</span></h4>
+                        <div class="key-box" id="public-key">
+                            <div class="key-placeholder">Your public key will appear here</div>
+                        </div>
+                        <button class="copy-button" data-target="public-key">Copy</button>
+                    </div>
+                    <div class="key-section">
+                        <h4>Private Key <span class="key-type">(Keep secret)</span></h4>
+                        <div class="key-box" id="private-key">
+                            <div class="key-placeholder">Your private key will appear here</div>
+                        </div>
+                        <button class="copy-button" data-target="private-key">Copy</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Encryption Section -->
+        <div class="crypto-card" id="encryption">
+            <div class="card-header">
+                <h3>2. Encryption</h3>
+                <div class="status-indicator" id="encryption-status"></div>
+            </div>
+            <div class="card-content">
+                <p>Encrypt a message using the recipient's public key.</p>
+                <div class="form-group">
+                    <label for="encryption-pubkey">Public Key</label>
+                    <input type="text" id="encryption-pubkey" placeholder="Paste recipient's public key here">
+                </div>
+                <div class="form-group">
+                    <label for="plaintext-message">Message to Encrypt</label>
+                    <textarea id="plaintext-message" placeholder="Enter your secret message here"></textarea>
+                </div>
+                <button class="primary-button" id="encrypt-btn">Encrypt Message</button>
+                <div class="result-display hidden" id="encryption-results">
+                    <h4>Encrypted Message</h4>
+                    <div class="result-box" id="ciphertext">
+                        <div class="result-placeholder">Your encrypted message will appear here</div>
+                    </div>
+                    <button class="copy-button" data-target="ciphertext">Copy</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Decryption Section -->
+        <div class="crypto-card" id="decryption">
+            <div class="card-header">
+                <h3>3. Decryption</h3>
+                <div class="status-indicator" id="decryption-status"></div>
+            </div>
+            <div class="card-content">
+                <p>Decrypt a message using your private key.</p>
+                <div class="form-group">
+                    <label for="decryption-privkey">Private Key</label>
+                    <input type="text" id="decryption-privkey" placeholder="Paste your private key here">
+                </div>
+                <div class="form-group">
+                    <label for="encrypted-message">Encrypted Message</label>
+                    <textarea id="encrypted-message" placeholder="Paste the encrypted message here"></textarea>
+                </div>
+                <button class="primary-button" id="decrypt-btn">Decrypt Message</button>
+                <div class="result-display hidden" id="decryption-results">
+                    <h4>Decrypted Message</h4>
+                    <div class="result-box" id="plaintext">
+                        <div class="result-placeholder">The decrypted message will appear here</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}
+
+{% block scripts %}
+<script src="{{ url_for('static', filename='js/crypto.js') }}"></script>
+{% endblock %}

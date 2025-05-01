@@ -1,0 +1,66 @@
+{% extends "base.html" %}
+
+{% block extra_head %}
+<meta name="description" content="Learn about Post-Quantum Cryptography, why it matters, and how it protects against quantum computer threats.">
+{% endblock %}
+
+{% block content %}
+<section class="about-section">
+    <h1>About Post-Quantum Cryptography</h1>
+    
+    <div class="content-card">
+        <h2>What is Post-Quantum Cryptography?</h2>
+        <p>
+            Post-Quantum Cryptography (PQC) refers to cryptographic algorithms that are thought to be secure against an attack by a quantum computer.
+            As quantum computers advance, they pose a significant threat to many of our current encryption methods.
+        </p>
+        <p>
+            In particular, Shor's algorithm running on a sufficiently powerful quantum computer can break most of the public-key
+            cryptography currently in use, including RSA, ECC, and Diffie-Hellman.
+        </p>
+    </div>
+    
+    <div class="content-card">
+        <h2>Why Do We Need PQC?</h2>
+        <p>
+            While large-scale quantum computers don't yet exist, the risk they pose is significant:
+        </p>
+        <ul>
+            <li><strong>Harvest Now, Decrypt Later</strong>: Adversaries can collect encrypted data now and decrypt it when quantum computers become available.</li>
+            <li><strong>Long-term Security</strong>: Data that needs to remain secure for decades could be vulnerable.</li>
+            <li><strong>Critical Infrastructure</strong>: Many security systems for critical infrastructure would need to be upgraded.</li>
+        </ul>
+    </div>
+    
+    <div class="content-card">
+        <h2>NIST PQC Standardization</h2>
+        <p>
+            The National Institute of Standards and Technology (NIST) initiated a process to standardize post-quantum cryptographic algorithms.
+            This demo uses <strong>Kyber</strong>, one of the selected algorithms from this process.
+        </p>
+        <h3>Key Algorithms Selected by NIST:</h3>
+        <ul>
+            <li><strong>CRYSTALS-Kyber</strong>: For general encryption (key establishment)</li>
+            <li><strong>CRYSTALS-Dilithium</strong>: For digital signatures</li>
+            <li><strong>FALCON</strong>: An alternative signature algorithm</li>
+            <li><strong>SPHINCS+</strong>: A hash-based signature scheme</li>
+        </ul>
+    </div>
+    
+    <div class="content-card">
+        <h2>About This Demo</h2>
+        <p>
+            This demonstration implements Kyber, a lattice-based key encapsulation mechanism (KEM).
+            It showcases:
+        </p>
+        <ul>
+            <li>Key generation - Creating quantum-resistant public and private keys</li>
+            <li>Encryption - Using the public key to secure messages</li>
+            <li>Decryption - Using the private key to read encrypted messages</li>
+        </ul>
+        <p>
+            <strong>Note:</strong> This is a simplified educational demonstration. Production systems would implement these algorithms as part of a larger cryptographic protocol with proper key management.
+        </p>
+    </div>
+</section>
+{% endblock %}

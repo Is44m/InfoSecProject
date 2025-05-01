@@ -1,0 +1,300 @@
+/* Add some Google fonts for the cyberpunk styling */
+@import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;600;700;800;900&family=Outfit:wght@300;400;500;600;700&family=Rajdhani:wght@300;400;500;600;700&display=swap');
+
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+
+/* Cyberpunk-themed UI for Quantum Encryption App */
+
+:root {
+  --cyber-bg: #050b18;
+  --cyber-text: #00e1ff;
+  --cyber-glow: 0 0 10px rgba(0, 225, 255, 0.7);
+  --cyber-accent: #ff0077;
+  --cyber-green: #00ffa3;
+  --cyber-purple: #bd00ff;
+  --cyber-blue: #0077ff;
+  --cyber-panel-bg: rgba(13, 21, 38, 0.85);
+  --cyber-panel-border: 1px solid rgba(0, 225, 255, 0.3);
+  --cyber-grid: repeating-linear-gradient(
+    rgba(0, 225, 255, 0.03) 0px,
+    rgba(0, 225, 255, 0) 1px,
+    transparent 1px,
+    transparent 20px
+  );
+}
+
+.cyber-bg {
+  background-color: var(--cyber-bg);
+  background-image: 
+    radial-gradient(circle at 40% 40%, rgba(0, 100, 255, 0.08), transparent 30%),
+    radial-gradient(circle at 60% 60%, rgba(255, 0, 119, 0.08), transparent 30%),
+    var(--cyber-grid);
+  color: var(--cyber-text);
+  font-family: 'Outfit', 'Rajdhani', 'Orbitron', sans-serif;
+  position: relative;
+  overflow: hidden;
+}
+
+.cyber-bg::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 3px;
+  background: linear-gradient(90deg, transparent, var(--cyber-text), transparent);
+  z-index: 1;
+}
+
+.cyber-grid {
+  position: relative;
+  z-index: 1;
+}
+
+.cyber-logo {
+  animation: pulse 2s infinite alternate;
+}
+
+.cyber-header {
+  position: relative;
+  padding: 2rem 0;
+}
+
+.cyber-title {
+  font-family: 'Orbitron', sans-serif;
+  letter-spacing: 2px;
+  text-shadow: var(--cyber-glow);
+  background: linear-gradient(to right, #00e1ff, #00ffa3);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  position: relative;
+}
+
+.cyber-subtitle {
+  letter-spacing: 3px;
+  opacity: 0.8;
+  font-family: 'Rajdhani', sans-serif;
+}
+
+.cyber-divider {
+  height: 1px;
+  background: linear-gradient(90deg, transparent, var(--cyber-text), transparent);
+  position: relative;
+}
+
+.cyber-divider::after {
+  content: '';
+  position: absolute;
+  height: 3px;
+  width: 10%;
+  background-color: var(--cyber-text);
+  top: -1px;
+  left: 45%;
+  box-shadow: var(--cyber-glow);
+}
+
+.cyber-panel {
+  background: var(--cyber-panel-bg);
+  border: var(--cyber-panel-border);
+  border-top: 2px solid rgba(0, 255, 234, 0.5);
+  border-radius: 5px;
+  padding: 1.5rem;
+  position: relative;
+  overflow: hidden;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.5);
+  backdrop-filter: blur(10px);
+  margin-bottom: 2rem;
+}
+
+.cyber-panel::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 2px;
+  background: linear-gradient(to right, transparent, var(--cyber-text), transparent);
+}
+
+.cyber-panel-header {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  margin-bottom: 1.5rem;
+  border-bottom: 1px solid rgba(0, 225, 255, 0.2);
+  padding-bottom: 1rem;
+}
+
+.cyber-section-title {
+  letter-spacing: 1px;
+  position: relative;
+}
+
+.cyber-button {
+  position: relative;
+  padding: 0.75rem 1.5rem;
+  border-radius: 4px;
+  font-weight: bold;
+  font-family: 'Rajdhani', sans-serif;
+  letter-spacing: 1px;
+  text-shadow: 0 0 5px rgba(0, 0, 0, 0.7);
+  overflow: hidden;
+  transition: all 0.3s;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.cyber-button::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(to right, transparent, rgba(255, 255, 255, 0.2), transparent);
+  transition: all 0.6s;
+}
+
+.cyber-button:hover::before {
+  left: 100%;
+}
+
+.cyber-button-content {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  position: relative;
+  z-index: 1;
+}
+
+.cyber-button-blue {
+  background: linear-gradient(135deg, #0050d6, #00a6ff);
+  box-shadow: 0 0 15px rgba(0, 119, 255, 0.5);
+}
+
+.cyber-button-green {
+  background: linear-gradient(135deg, #00925a, var(--cyber-green));
+  box-shadow: 0 0 15px rgba(0, 255, 163, 0.5);
+}
+
+.cyber-button-purple {
+  background: linear-gradient(135deg, #8000a8, var(--cyber-purple));
+  box-shadow: 0 0 15px rgba(189, 0, 255, 0.5);
+}
+
+.cyber-button:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.cyber-field {
+  margin-bottom: 1rem;
+}
+
+.cyber-label {
+  display: block;
+  margin-bottom: 0.5rem;
+  font-size: 0.875rem;
+  letter-spacing: 1px;
+  color: var(--cyber-text);
+  font-family: 'Rajdhani', sans-serif;
+  position: relative;
+  padding-left: 0.75rem;
+}
+
+.cyber-label::before {
+  content: '>';
+  position: absolute;
+  left: 0;
+  color: var(--cyber-text);
+}
+
+.cyber-textarea {
+  width: 100%;
+  background-color: rgba(5, 11, 24, 0.7);
+  border: 1px solid rgba(0, 225, 255, 0.3);
+  border-radius: 4px;
+  padding: 0.75rem;
+  color: rgba(255, 255, 255, 0.9);
+  font-family: 'Courier New', monospace;
+  resize: vertical;
+  transition: all 0.3s;
+}
+
+.cyber-textarea:focus {
+  outline: none;
+  border-color: var(--cyber-text);
+  box-shadow: 0 0 0 1px var(--cyber-text);
+}
+
+.cyber-data-display {
+  background-color: rgba(0, 0, 0, 0.3);
+  border: 1px solid rgba(0, 225, 255, 0.2);
+  border-left: 3px solid var(--cyber-text);
+  border-radius: 4px;
+  padding: 0.75rem;
+  font-family: 'Courier New', monospace;
+  color: rgba(255, 255, 255, 0.9);
+  position: relative;
+  max-height: 150px;
+  overflow-y: auto;
+  white-space: pre-wrap;
+  word-break: break-all;
+}
+
+.cyber-pulse {
+  border-radius: 4px;
+  overflow: hidden;
+}
+
+.cyber-pulse-inner {
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+  animation: pulse-animation 1.5s infinite;
+}
+
+/* Customize scrollbar for a cyber look */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: rgba(0, 0, 0, 0.2);
+  border-radius: 10px;
+}
+
+::-webkit-scrollbar-thumb {
+  background: linear-gradient(to bottom, var(--cyber-text), var(--cyber-blue));
+  border-radius: 10px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--cyber-text);
+}
+
+/* Animations */
+@keyframes pulse {
+  from {
+    opacity: 0.8;
+    filter: drop-shadow(0 0 1px var(--cyber-text));
+  }
+  to {
+    opacity: 1;
+    filter: drop-shadow(0 0 8px var(--cyber-text));
+  }
+}
+
+@keyframes pulse-animation {
+  0% {
+    transform: translateX(-100%);
+  }
+  50%, 100% {
+    transform: translateX(100%);
+  }
+}
