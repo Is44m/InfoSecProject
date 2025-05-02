@@ -1,11 +1,18 @@
-from flask import Blueprint, render_template, request, jsonify
+from flask import Blueprint, render_template, request, jsonify, make_response
 from utils.crypto_utils import generate_kyber_keypair, encrypt_message, decrypt_message
+from flask_cors import cross_origin
 
 crypto_bp = Blueprint('crypto', __name__)
 
 @crypto_bp.route('/generate-keys', methods=['POST', 'OPTIONS'])
+@cross_origin()
 def generate_keys():
     """API endpoint to generate a Kyber keypair"""
+    # Handle OPTIONS request for preflight
+    if request.method == 'OPTIONS':
+        response = make_response()
+        return response
+        
     try:
         # Generate public and private keys
         public_key, private_key = generate_kyber_keypair()
@@ -26,8 +33,14 @@ def generate_keys():
         }), 500
 
 @crypto_bp.route('/encrypt', methods=['POST', 'OPTIONS'])
+@cross_origin()
 def encrypt():
     """API endpoint to encrypt a message using a public key"""
+    # Handle OPTIONS request for preflight
+    if request.method == 'OPTIONS':
+        response = make_response()
+        return response
+        
     try:
         data = request.get_json()
         message = data.get('message', '')
@@ -57,8 +70,14 @@ def encrypt():
         }), 500
 
 @crypto_bp.route('/decrypt', methods=['POST' , 'OPTIONS'])
+@cross_origin()
 def decrypt():
     """API endpoint to decrypt a message using a private key"""
+    # Handle OPTIONS request for preflight
+    if request.method == 'OPTIONS':
+        response = make_response()
+        return response
+        
     try:
         data = request.get_json()
         ciphertext_hex = data.get('ciphertext', '')

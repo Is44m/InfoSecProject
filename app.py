@@ -13,16 +13,22 @@ def create_app():
     app = Flask(__name__)
     app.secret_key = os.getenv('SECRET_KEY', os.urandom(24))
 
-    # Enable CORS for your frontend ONLY
+    # Enable CORS for your frontend ONLY with proper configuration
     CORS(
         app,
         origins=[
             "https://quantum-shield-five.vercel.app",  # your FE
-            "https://is44m.pythonanywhere.com"
+            "https://is44m.pythonanywhere.com",
+            # Add localhost for development if needed
+            "http://localhost:5173",
+            "http://localhost:3000"
         ],
         supports_credentials=True,
-        allow_headers=["Content-Type", "Authorization"],
-        expose_headers=["Access-Control-Allow-Origin"]
+        methods=["GET", "POST", "PUT", "DELETE", "OPTIONS"],
+        allow_headers=["Content-Type", "Authorization", "X-Requested-With", "Accept"],
+        expose_headers=["Access-Control-Allow-Origin", "Access-Control-Allow-Headers"],
+        vary_header=True,
+        max_age=600
     )
 
     # Security headers with Talisman -- move this AFTER CORS!
@@ -30,7 +36,8 @@ def create_app():
         'default-src': ['\'self\''],
         'style-src': ['\'self\'', '\'unsafe-inline\'', 'https://fonts.googleapis.com'],
         'font-src': ['\'self\'', 'https://fonts.gstatic.com'],
-        'script-src': ['\'self\'', '\'unsafe-inline\'']
+        'script-src': ['\'self\'', '\'unsafe-inline\''],
+        'connect-src': ['\'self\'', 'https://is44m.pythonanywhere.com', 'https://quantum-shield-five.vercel.app']
     }
 
     Talisman(
