@@ -1,17 +1,11 @@
 import React, { useEffect, useRef, useState } from "react";
 
 const GLYPHS =
-  "アカサタナハマヤラワガザダバパイイチニヒミリギヂビピウクスツヌフムユルグズブプエケセテネヘメレゲゼデベペオコソトノホモヨロヲゴゾドボポヴッン";
+  "アカサタナハマヤラワガザダバパイキシチニヒミリギヂビピウクスツヌフムユルグズブプエケセテネヘメレゲゼデベペオコソトノホモヨロヲゴゾドボポヴッン";
 const SYMBOLS = "!@#$%^&*()_+-=[]{}|;:,./<>?`~";
 const ALPHANUMERIC = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
 const COLORS = [
-  "#6fffe9",
-  "#fe53bb",
-  "#fff685",
-  "#00ffd0",
-  "#fff",
-  "#ff6a00",
-  "#e900ff",
+  "#6fffe9", "#fe53bb", "#fff685", "#00ffd0", "#fff", "#ff6a00", "#e900ff",
 ];
 
 interface TextScrambleProps {
@@ -24,105 +18,116 @@ interface GlitchChar {
   current: string;
   locked: boolean;
   color: string;
-  delayMs: number;
+  delay: number;
 }
 
 export const AdvancedTextScramble: React.FC<TextScrambleProps> = ({
   text,
   isActive,
 }) => {
+  // State: array of GlitchChar, tracking per-char progress
   const [chars, setChars] = useState<GlitchChar[]>([]);
-  const intervalRef = useRef<number>();
-  const startTimeRef = useRef<number>(0);
+  const rafRef = useRef<number>();
+  const runAnim = useRef(false);
 
+  // Anim logic only runs if actually needed
   useEffect(() => {
-    // clear any running interval
-    if (intervalRef.current) {
-      clearInterval(intervalRef.current);
-    }
+    if (rafRef.current) cancelAnimationFrame(rafRef.current);
+    runAnim.current = false;
 
-    // build our timeline
-    const baseMs = 300;
-    const staggerMs = 100;
-    const timeline = text.split("").map((finalChar, i) => {
-      // pick an initial scramble glyph
-      const pick = Math.random();
-      const current = pick > 0.66
-        ? GLYPHS[Math.floor(Math.random() * GLYPHS.length)]
-        : pick > 0.33
-          ? SYMBOLS[Math.floor(Math.random() * SYMBOLS.length)]
-          : ALPHANUMERIC[Math.floor(Math.random() * ALPHANUMERIC.length)];
-      return {
-        final: finalChar,
-        current,
-        locked: !isActive,   // if not active, lock immediately
-        color: COLORS[(i + Math.floor(Math.random() * COLORS.length)) % COLORS.length],
-        delayMs: baseMs + i * staggerMs + Math.random() * staggerMs,
-      };
-    });
-
-    setChars(timeline);
-
-    // if animation is off, we’re done
+    // Prepare for a new animation
+    const safeText = text;
+    // const safeText = text.length > 100 ? text.substring(0, 100) : text;
     if (!isActive) {
+      setChars(
+        safeText.split("").map((c) => ({
+          final: c,
+          current: c,
+          locked: true,
+          color: "#fff",
+          delay: 0,
+        }))
+      );
       return;
     }
 
-    // start time
-    startTimeRef.current = performance.now();
+    // For each char, give a random delay (cascades left->right)
+    const base = 50, stagger = 35;
+    const timeline = safeText.split("").map((c, i) => ({
+      final: c,
+      current:
+        Math.random() > 0.6
+          ? GLYPHS[Math.floor(Math.random() * GLYPHS.length)]
+          : Math.random() > 0.4
+          ? SYMBOLS[Math.floor(Math.random() * SYMBOLS.length)]
+          : ALPHANUMERIC[Math.floor(Math.random() * ALPHANUMERIC.length)],
+      locked: false,
+      color: COLORS[(i + Math.floor(Math.random() * COLORS.length)) % COLORS.length],
+      delay: base + stagger * i + Math.floor(Math.random() * stagger), // per-char lock-in
+    }));
 
-    // run at a constant 20fps
-    const FRAME_INTERVAL = 1000 / 20;
+    setChars(timeline);
 
-    intervalRef.current = window.setInterval(() => {
-      const now = performance.now();
-      const elapsed = now - startTimeRef.current;
+    // Core per-frame scramble logic
+    let frame = 0;
+    runAnim.current = true;
+    
+    const loop = () => {
+      if (!runAnim.current) return;
+      let finished = true;
 
-      setChars((prev) => {
-        let anyLeft = false;
-        const next = prev.map((c) => {
-          if (c.locked) return c;
-
-          if (elapsed >= c.delayMs) {
-            // lock it for good
-            return { ...c, current: c.final, locked: true, color: "#fff" };
-          }
-
-          anyLeft = true;
-          // still animating
-          const r = Math.random();
-          const newChar =
-            r > 0.66
+      // Map through timeline and mutate as needed
+      timeline.forEach((char) => {
+        if (char.locked) return;
+        // Each character "locks" after its delay
+        if (frame > char.delay) {
+          char.current = char.final;
+          char.locked = true;
+        } else {
+          finished = false;
+          const scramblePick = Math.random();
+          char.current =
+            scramblePick > 0.66
               ? GLYPHS[Math.floor(Math.random() * GLYPHS.length)]
-              : r > 0.33
-                ? SYMBOLS[Math.floor(Math.random() * SYMBOLS.length)]
-                : ALPHANUMERIC[Math.floor(Math.random() * ALPHANUMERIC.length)];
-          return {
-            ...c,
-            current: Math.random() > 0.9 ? c.final : newChar,
-          };
-        });
-
-        if (!anyLeft && intervalRef.current) {
-          clearInterval(intervalRef.current);
-          // enforce final state one last time
-          return next.map((c) => ({
-            final: c.final,
-            current: c.final,
-            locked: true,
-            color: "#fff",
-            delayMs: c.delayMs,
-          }));
+              : scramblePick > 0.33
+              ? SYMBOLS[Math.floor(Math.random() * SYMBOLS.length)]
+              : ALPHANUMERIC[Math.floor(Math.random() * ALPHANUMERIC.length)];
+          // rare flicker: correct char (hint at convergence)
+          if (Math.random() > 0.91) char.current = char.final;
         }
-
-        return next;
       });
-    }, FRAME_INTERVAL);
 
-    return () => {
-      if (intervalRef.current) {
-        clearInterval(intervalRef.current);
+      setChars(timeline.map((c) => ({ ...c })));
+
+      frame++;
+      if (!finished) {
+        rafRef.current = requestAnimationFrame(loop);
+      } else {
+        // Optionally, run a finishing "post-glitch" shimmer
+        setTimeout(() => {
+          if (runAnim.current) {
+            setChars((prev) =>
+              prev.map((c) =>
+                Math.random() < 0.1 && c.final !== " "
+                  ? {
+                      ...c,
+                      current: GLYPHS[Math.floor(Math.random() * GLYPHS.length)],
+                      color: COLORS[Math.floor(Math.random() * COLORS.length)],
+                    }
+                  : c
+              )
+            );
+          }
+        }, 1000 / 10); // ~30 FPS
       }
+    };
+
+    rafRef.current = requestAnimationFrame(loop);
+
+    // Cleanup
+    return () => {
+      runAnim.current = false;
+      if (rafRef.current) cancelAnimationFrame(rafRef.current);
     };
   }, [text, isActive]);
 
@@ -138,6 +143,9 @@ export const AdvancedTextScramble: React.FC<TextScrambleProps> = ({
               ? "0 0 4px #0ff8, 0 0 8px #fff7"
               : "0 0 12px #fe53bb66, 0 0 16px #07ffddcc",
             transition: "color 0.12s, text-shadow 0.18s",
+            // filter: c.locked
+            //   ? "none"
+            //   : `blur(${0.6 + Math.random() * 0.7}px) brightness(1.24)`,
             fontWeight: c.locked ? 700 : 500,
             display: "inline-block",
             letterSpacing: "0.06em",
