@@ -83,32 +83,36 @@ export const AdvancedTextScramble: React.FC<TextScrambleProps> = ({
         const next = prev.map((c) => {
           if (c.locked) return c;
 
-          // if its delay has passed, lock it into place
           if (elapsed >= c.delayMs) {
+            // lock it for good
             return { ...c, current: c.final, locked: true, color: "#fff" };
           }
 
           anyLeft = true;
-          // otherwise, pick a fresh random glyph each tick
-          let newChar: string;
+          // still animating
           const r = Math.random();
-          if (r > 0.66) {
-            newChar = GLYPHS[Math.floor(Math.random() * GLYPHS.length)];
-          } else if (r > 0.33) {
-            newChar = SYMBOLS[Math.floor(Math.random() * SYMBOLS.length)];
-          } else {
-            newChar = ALPHANUMERIC[Math.floor(Math.random() * ALPHANUMERIC.length)];
-          }
-
+          const newChar =
+            r > 0.66
+              ? GLYPHS[Math.floor(Math.random() * GLYPHS.length)]
+              : r > 0.33
+                ? SYMBOLS[Math.floor(Math.random() * SYMBOLS.length)]
+                : ALPHANUMERIC[Math.floor(Math.random() * ALPHANUMERIC.length)];
           return {
             ...c,
-            current: Math.random() > 0.9 ? c.final : newChar, // rare flicker
+            current: Math.random() > 0.9 ? c.final : newChar,
           };
         });
 
-        // once everyone is locked, clear out
         if (!anyLeft && intervalRef.current) {
           clearInterval(intervalRef.current);
+          // enforce final state one last time
+          return next.map((c) => ({
+            final: c.final,
+            current: c.final,
+            locked: true,
+            color: "#fff",
+            delayMs: c.delayMs,
+          }));
         }
 
         return next;
