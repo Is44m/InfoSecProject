@@ -30,10 +30,7 @@ def encrypt_message(public_key, message_bytes):
     # Encapsulate to get shared secret and KEM ciphertext
     shared_secret, kem_ciphertext = kemalg.encap(public_key)
     
-    # In a real application, you would use the shared secret with
-    # a symmetric encryption algorithm like AES to encrypt the actual message
-    # For simplicity in this demo, we'll just XOR the message with the shared secret
-    # (Note: This is NOT secure for real applications, just for demonstration)
+    # In reality we'd also use AES here
     
     # Extend shared secret if needed to match message length
     extended_secret = _extend_key(shared_secret, len(message_bytes))
@@ -58,7 +55,6 @@ def decrypt_message(private_key, ciphertext):
         bytes: The decrypted message
     """
     # Calculate the KEM ciphertext size
-    # Since we don't have a direct API call for this, we'll use a constant
     # ML-KEM-512 ciphertext size is 768 bytes
     kem_ciphertext_size = 768
     
