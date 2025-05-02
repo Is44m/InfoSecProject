@@ -1,4 +1,4 @@
-# Post-Quantum Cryptography Demo
+# QUANTUM SHIELD - Post-Quantum Cryptography 
 
 A Flask web application that demonstrates Post-Quantum Cryptography (PQC) techniques for encrypting and decrypting data. This project showcases Kyber, a NIST PQC finalist algorithm, through an intuitive web interface.
 
@@ -13,8 +13,8 @@ A Flask web application that demonstrates Post-Quantum Cryptography (PQC) techni
 
 - **Backend**: Python 3.x, Flask
 - **Cryptography**: pyoqs (Open Quantum Safe)
-- **Frontend**: HTML, CSS, JavaScript
-- **Security**: Flask-Talisman
+- **Frontend**: React, Tailwind
+- **Security**: Flask-Talisman, CORS
 
 ## Getting Started
 
@@ -28,7 +28,6 @@ A Flask web application that demonstrates Post-Quantum Cryptography (PQC) techni
 1. Clone the repository:
    ```
    git clone <repository-url>
-   cd pqc-demo
    ```
 
 2. Create and activate a virtual environment:
@@ -48,37 +47,24 @@ A Flask web application that demonstrates Post-Quantum Cryptography (PQC) techni
    ```
 
 5. Run the application:
+   Backend:
    ```
    python app.py
    ```
-
-6. Open your browser and navigate to:
+   Frontend:
    ```
-   http://localhost:5000
+   npm run dev
    ```
 
-## Project Structure
+6. To view the frontend, open your browser and navigate to:
+   ```
+   http://localhost:5173
+   ```
 
-```
-pqc-demo/
-├── app.py                  # Main Flask application entry point
-├── routes/                 # Route definitions
-│   ├── main_routes.py      # Main page routes
-│   └── crypto_routes.py    # Cryptographic operation routes
-├── utils/                  # Utility functions
-│   └── crypto_utils.py     # Cryptographic functions
-├── templates/              # HTML templates
-│   ├── base.html           # Base template
-│   ├── index.html          # Homepage
-│   └── about.html          # About PQC page
-├── static/                 # Static files
-│   ├── css/                # Stylesheets
-│   ├── js/                 # JavaScript files
-│   └── images/             # Images
-├── .env                    # Environment variables
-├── .env.example            # Example environment file
-└── requirements.txt        # Project dependencies
-```
+   Your backend will run on:
+   ```
+   http://localhost:3000
+   ```
 
 ## Security Considerations
 
@@ -90,12 +76,10 @@ This application is meant for educational purposes to demonstrate post-quantum c
 - HTTPS enforcement
 - More sophisticated error handling
 
-## About Post-Quantum Cryptography
-
-Post-Quantum Cryptography (PQC) refers to cryptographic algorithms that are believed to be secure against an attack by a quantum computer. As quantum computing advances, many widely-used cryptographic systems (like RSA and ECC) will become vulnerable. PQC aims to develop new cryptographic systems that remain secure even against quantum attacks.
-
-The US National Institute of Standards and Technology (NIST) has been leading an effort to standardize quantum-resistant cryptographic algorithms. This application implements Kyber, one of NIST's selected algorithms.
-
-## License
-
-This project is licensed under the MIT License - see the LICENSE file for details.
+## Developers
+   ```
+   Zarmeen Tauseef - AI & FullStack
+   ```
+   ```
+   Isaam Ansari - FullStack & Deployments
+   ```
